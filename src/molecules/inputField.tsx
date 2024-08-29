@@ -14,7 +14,6 @@ interface Props {
 }
 
 export default function InputField(props: Props) {
-    console.log(props.error);
     return (
         <div className="flex flex-col space-y-2">
             <Label

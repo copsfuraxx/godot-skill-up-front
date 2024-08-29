@@ -55,7 +55,7 @@ export default function Exercise(props: Props) {
         <div className="p-6">
             <h2 className="text-2xl font-semibold mb-4">{exercise?.name}</h2>
             <p className="text-gray-700 dark:text-gray-200 mb-6">{exercise?.description}</p>
-            <Link href={exercise?.baseCodeUrl} external>View Code on GitHub</Link>
+            <Link href={exercise!.baseCodeUrl} external>View Code on GitHub</Link>
         </div>
     </div>
   );

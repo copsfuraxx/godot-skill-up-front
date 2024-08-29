@@ -6,6 +6,7 @@ interface Props {
     label: string;
     required?: boolean;
     value?: string;
+    error?: string;
     onBlur?: (value: string) => void;
     onChange?: (value: string) => void;
 }
@@ -25,7 +26,11 @@ export default function TextareaField(props: Props) {
                 onBlur={props.onBlur}
                 onChange={props.onChange}
                 required={props.required}
+                error={props.error != null}
             />
+            {props.error && (
+                <span className="text-red-500 text-sm">{props.error}</span>
+            )}
         </div>
     )
 }

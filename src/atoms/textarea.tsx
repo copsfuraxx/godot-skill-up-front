@@ -2,6 +2,7 @@ interface Props {
     name: string;
     placeholder?: string;
     value?: string;
+    error?: boolean;
     onBlur?: (value: string) => void;
     onChange?: (value: string) => void;
     required?: boolean;
@@ -10,7 +11,7 @@ interface Props {
 export default function Textarea(props: Props) {
     return (
         <textarea
-            className="text-black px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-200 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500"
+            className={"text-black px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-indigo-200 " + (props.error ? "border-red-500" : "border-gray-300")}
             id={props.name}
             name={props.name}
             placeholder={props.placeholder}

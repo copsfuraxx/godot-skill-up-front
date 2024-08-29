@@ -49,7 +49,6 @@ export default function Page() {
     })
 
     if(!response.ok) {
-      console.error(response.statusText);
       return;
     }
  
@@ -58,7 +57,6 @@ export default function Page() {
   }
 
   function validateLogname(value: string) {
-    console.log(value);
     if (value.length < 3) {
       setLoginError("Le pseudo doit contenir au moins 3 caractères");
     } else if (logNameError) {
