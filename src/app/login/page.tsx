@@ -1,10 +1,11 @@
 "use client"
 
-import { FormEvent, useEffect, useState } from "react";
+import { FocusEvent, FormEvent, useEffect, useState } from "react";
 import { useRouter } from 'next/navigation'
 import { useAuth } from "@/context/authContext";
 import InputField from "@/molecules/inputField";
 import Button from "@/atoms/button";
+import PasswordField from "@/molecules/passwordField copy";
  
 export default function Page() {
   const router = useRouter();
@@ -24,19 +25,16 @@ export default function Page() {
     }
   }, [user, router]);
 
-  function isFormValid() {
-    return !logNameError && !passwordError;
-  }
-
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    validateLogname(event.currentTarget.username.value);
-    validatePassword(event.currentTarget.password.value);
+    validateLogname(event.currentTarget.username);
+    validatePassword(event.currentTarget.password);
 
-    if (!isFormValid()) {
+    if (logNameError || passwordError) {
       return;
     }
+
  
     const formData = new FormData(event.currentTarget);
     const response = await fetch("http://localhost:8080/auth/login", {
@@ -45,7 +43,7 @@ export default function Page() {
         "Accept": "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(Object.fromEntries(formData)),
+      body: formData,
     })
 
     if(!response.ok) {
@@ -56,18 +54,23 @@ export default function Page() {
     login(data);
   }
 
-  function validateLogname(value: string) {
-    if (value.length < 3) {
-      setLoginError("Le pseudo doit contenir au moins 3 caractères");
-    } else if (logNameError) {
+  function validateLogname(target: HTMLInputElement) {
+    if (!target.validity.valid) {
+      setLoginError(target.validationMessage);
+    }
+    else if (logNameError) {
       setLoginError(undefined);
     }
   }
 
-  function validatePassword(value: string) {
-    if (value.length < 8) {
-      setPasswordError("Le mot de passe doit contenir au moins 8 caractères");
-    } else if (logNameError) {
+  function validatePassword(target: HTMLInputElement) {
+    if (target.validity.patternMismatch) {
+      setPasswordError("Password must contain at least one number, one uppercase and one lowercase letter");
+    }
+    else if (!target.validity.valid) {
+      setPasswordError(target.validationMessage);
+    }
+    else if (passwordError) {
       setPasswordError(undefined);
     }
   }
@@ -81,17 +84,21 @@ export default function Page() {
                     name="username"
                     label="Pseudo de connection"
                     type="text"
+                    required
+                    minLength={3}
+                    maxLength={20}
                     error={logNameError}
                     onBlur={validateLogname}
-                    required
                 />
-                <InputField
+                <PasswordField
                     name="password"
                     label="Password"
-                    type="password"
                     error={passwordError}
-                    onBlur={validatePassword}
                     required
+                    minLength={8}
+                    maxLength={20}
+                    pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$"
+                    onBlur={validatePassword}
                 />
                 <div className="w-full flex justify-center">
                     <Button type="submit">Login</Button>

@@ -1,11 +1,10 @@
-import Input from '@/atoms/input'
 import Label from '@/atoms/label'
+import PasswordInput from '@/atoms/passwordInput';
 import { FocusEvent } from 'react';
 
 interface Props {
     name: string;
     label: string;
-    type: string;
     required?: boolean;
     value?: string;
     placeholder?: string;
@@ -19,7 +18,7 @@ interface Props {
     onChange?: (value: string) => void;
 }
 
-export default function InputField(props: Props) {
+export default function PasswordField(props: Props) {
     return (
         <div className="flex flex-col space-y-2">
             <Label
@@ -28,9 +27,8 @@ export default function InputField(props: Props) {
                 value={props.label}
             >
             </Label>
-            <Input
+            <PasswordInput
                 name={props.name}
-                type={props.type}
                 value={props.value}
                 required={props.required}
                 placeholder={props.placeholder}

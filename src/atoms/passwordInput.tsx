@@ -1,7 +1,7 @@
-import { FocusEvent } from "react";
+import { FocusEvent, useState } from "react";
+import Button from "./button";
 
 interface Props {
-    type: string;
     name: string;
     placeholder?: string;
     value?: string;
@@ -12,17 +12,25 @@ interface Props {
     minLength?: number;
     maxLength?: number;
     pattern?: string;
-    onBlur?: (target: HTMLInputElement) => void;
+    onBlur?: (taget: HTMLInputElement) => void;
     onChange?: (value: string) => void;
 }
 
-export default function Input(props: Props) {
+export default function PasswordInput(props: Props) {
+    const [passwordVisible, setPasswordVisible] = useState(false);
+    function togglePasswordVisibility() {
+        setPasswordVisible(!passwordVisible);
+
+    }
+
+
     return (
+        <>
         <input
             className={"text-black px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-indigo-200 " + (props.error ? "border-red-500" : "border-gray-300")}
             id={props.name}
             name={props.name}
-            type={props.type}
+            type={passwordVisible ? "text" : "password"}
             placeholder={props.placeholder}
             value={props.value}
             required={props.required}
@@ -34,5 +42,10 @@ export default function Input(props: Props) {
             onBlur={(event) => props.onBlur?.(event.target)}
             onChange={(event) => props.onChange?.(event.target.value)}
         />
+        <div className="w-full flex">
+            <input id="password-visibility" type="checkbox" onClick={togglePasswordVisibility}/>
+            <label htmlFor="password-visibility" className="ml-2">Visible</label>
+        </div>
+        </>
     )
 }
